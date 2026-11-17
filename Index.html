@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All Tach – Prompt Library</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#14213d;--muted:#5b6680;--accent:#1f6feb;--accent-t:#fff;--border:#dde3ee;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--card:#172038;--text:#e8ecf7;--muted:#9aa6c4;--accent:#4c8dff;--accent-t:#0b1020;--border:#27335a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1424;--card:#172038;--text:#e8ecf7;--muted:#9aa6c4;--accent:#4c8dff;--accent-t:#0b1020;--border:#27335a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+header{padding:24px 16px 8px;max-width:760px;margin:0 auto}
+h1{margin:0;font-size:1.6rem}
+header p{margin:4px 0 0;color:var(--muted)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:12px 16px;max-width:760px;margin:0 auto;z-index:5}
+input{width:100%;padding:12px 14px;font-size:1rem;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text)}
+main{max-width:760px;margin:0 auto;padding:0 16px 40px;display:grid;gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px}
+.card h2{margin:0 0 6px;font-size:1.05rem}
+.card p{margin:0 0 12px;color:var(--muted);font-size:.95rem;overflow-wrap:anywhere}
+button{background:var(--accent);color:var(--accent-t);border:0;border-radius:10px;padding:10px 16px;font-size:.95rem;font-weight:600;cursor:pointer}
+.empty{text-align:center;color:var(--muted);padding:24px}
+</style>
+</head>
+<body>
+<header>
+<h1>All Tach – Prompt Library</h1>
+<p>Search a prompt, then tap Copy.</p>
+</header>
+<div class="bar"><input id="q" type="search" placeholder="Search prompts (e.g. shocked, victory)" autocomplete="off"></div>
+<main id="list"></main>
+<script>
+var S=" Same character design, same black wavy hairstyle, same blue All tach T-shirt, blue jeans, black wristwatch, anime art style, full body, clean bright green chroma key background, high detail, 9:16 vertical.";
+var P=[
+["Photo 1 – Pose Prompt","An anime-style young boy wearing a white school shirt with rolled-up sleeves and a red tie, holding a smartphone with the Instagram logo in his right hand near his face, looking at the phone with wide shocked eyes, mouth open in surprise, eyebrows raised, left hand lifted near his chest with fingers spread, expressive surprised body posture."],
+["Photo 2 – Pose Prompt","An anime-style young boy wearing a white school shirt with rolled-up sleeves and a red tie, holding a black smartphone in his left hand while his right hand rests on his forehead, looking at the phone with wide shocked eyes, mouth open in disbelief, eyebrows furrowed, showing a stressed and worried expression."],
+["3. Thinking Pose","Anime boy standing confidently, one hand touching his chin, looking slightly upward with a thoughtful expression, other hand resting on his waist."+S],
+["4. Pointing Pose","Anime boy looking directly at the camera, right hand pointing towards the viewer, left hand resting casually near his waist, confident smile."+S],
+["5. Explaining Pose","Anime boy standing with one hand raised and palm open, as if explaining something to the audience, friendly facial expression, other hand relaxed."+S],
+["6. Shocked Pose","Anime boy with both hands raised near his cheeks, wide-open eyes, mouth open in shock, raised eyebrows, dramatic surprised expression."+S],
+["7. Laughing Pose","Anime boy laughing happily, eyes slightly closed, one hand covering his mouth, other hand resting on his stomach."+S],
+["8. Welcome Pose","Anime boy smiling warmly, both arms slightly open towards the camera, welcoming the audience."+S],
+["9. Warning Pose","Anime boy raising his right index finger towards the camera, serious facial expression, slightly tilted head, warning gesture."+S],
+["10. Phone Checking Pose","Anime boy holding a smartphone in his right hand, looking down at the screen with a curious expression, left hand touching his chin."+S],
+["11. Victory Pose","Anime boy smiling confidently, raising his right hand with a V-sign, left hand resting on his waist."+S],
+["12. Sad Pose","Anime boy looking down sadly, shoulders slightly lowered, one hand touching his forehead, emotional facial expression."+S]
+];
+var list=document.getElementById("list"),q=document.getElementById("q");
+function copy(t,btn){
+  function ok(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent="Copy"},1500)}
+  function fb(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){btn.textContent="Press and hold to copy"}document.body.removeChild(a)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}
+}
+function render(){
+  var s=q.value.trim().toLowerCase();list.innerHTML="";var n=0;
+  P.forEach(function(p){
+    if(s&&(p[0]+" "+p[1]).toLowerCase().indexOf(s)<0)return;
+    n++;
+    var c=document.createElement("div");c.className="card";
+    var h=document.createElement("h2");h.textContent=p[0];
+    var d=document.createElement("p");d.textContent=p[1];
+    var b=document.createElement("button");b.textContent="Copy";
+    b.onclick=function(){copy(p[1],b)};
+    c.appendChild(h);c.appendChild(d);c.appendChild(b);list.appendChild(c);
+  });
+  if(!n){var e=document.createElement("div");e.className="empty";e.textContent="No prompts found.";list.appendChild(e)}
+}
+q.addEventListener("input",render);render();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All Tach – Prompt Library</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#14213d;--muted:#5b6680;--accent:#1f6feb;--accent-t:#fff;--border:#dde3ee;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--card:#172038;--text:#e8ecf7;--muted:#9aa6c4;--accent:#4c8dff;--accent-t:#0b1020;--border:#27335a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1424;--card:#172038;--text:#e8ecf7;--muted:#9aa6c4;--accent:#4c8dff;--accent-t:#0b1020;--border:#27335a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+header{padding:24px 16px 8px;max-width:760px;margin:0 auto}
+h1{margin:0;font-size:1.6rem}
+header p{margin:4px 0 0;color:var(--muted)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:12px 16px;max-width:760px;margin:0 auto;z-index:5}
+input{width:100%;padding:12px 14px;font-size:1rem;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text)}
+main{max-width:760px;margin:0 auto;padding:0 16px 40px;display:grid;gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px}
+.card h2{margin:0 0 6px;font-size:1.05rem}
+.card p{margin:0 0 12px;color:var(--muted);font-size:.95rem;overflow-wrap:anywhere}
+button{background:var(--accent);color:var(--accent-t);border:0;border-radius:10px;padding:10px 16px;font-size:.95rem;font-weight:600;cursor:pointer}
+.empty{text-align:center;color:var(--muted);padding:24px}
+</style>
+</head>
+<body>
+<header>
+<h1>All Tach – Prompt Library</h1>
+<p>Search a prompt, then tap Copy.</p>
+</header>
+<div class="bar"><input id="q" type="search" placeholder="Search prompts (e.g. shocked, victory)" autocomplete="off"></div>
+<main id="list"></main>
+<script>
+var S=" Same character design, same black wavy hairstyle, same blue All tach T-shirt, blue jeans, black wristwatch, anime art style, full body, clean bright green chroma key background, high detail, 9:16 vertical.";
+var P=[
+["Photo 1 – Pose Prompt","An anime-style young boy wearing a white school shirt with rolled-up sleeves and a red tie, holding a smartphone with the Instagram logo in his right hand near his face, looking at the phone with wide shocked eyes, mouth open in surprise, eyebrows raised, left hand lifted near his chest with fingers spread, expressive surprised body posture."],
+["Photo 2 – Pose Prompt","An anime-style young boy wearing a white school shirt with rolled-up sleeves and a red tie, holding a black smartphone in his left hand while his right hand rests on his forehead, looking at the phone with wide shocked eyes, mouth open in disbelief, eyebrows furrowed, showing a stressed and worried expression."],
+["3. Thinking Pose","Anime boy standing confidently, one hand touching his chin, looking slightly upward with a thoughtful expression, other hand resting on his waist."+S],
+["4. Pointing Pose","Anime boy looking directly at the camera, right hand pointing towards the viewer, left hand resting casually near his waist, confident smile."+S],
+["5. Explaining Pose","Anime boy standing with one hand raised and palm open, as if explaining something to the audience, friendly facial expression, other hand relaxed."+S],
+["6. Shocked Pose","Anime boy with both hands raised near his cheeks, wide-open eyes, mouth open in shock, raised eyebrows, dramatic surprised expression."+S],
+["7. Laughing Pose","Anime boy laughing happily, eyes slightly closed, one hand covering his mouth, other hand resting on his stomach."+S],
+["8. Welcome Pose","Anime boy smiling warmly, both arms slightly open towards the camera, welcoming the audience."+S],
+["9. Warning Pose","Anime boy raising his right index finger towards the camera, serious facial expression, slightly tilted head, warning gesture."+S],
+["10. Phone Checking Pose","Anime boy holding a smartphone in his right hand, looking down at the screen with a curious expression, left hand touching his chin."+S],
+["11. Victory Pose","Anime boy smiling confidently, raising his right hand with a V-sign, left hand resting on his waist."+S],
+["12. Sad Pose","Anime boy looking down sadly, shoulders slightly lowered, one hand touching his forehead, emotional facial expression."+S]
+];
+var list=document.getElementById("list"),q=document.getElementById("q");
+function copy(t,btn){
+  function ok(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent="Copy"},1500)}
+  function fb(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){btn.textContent="Press and hold to copy"}document.body.removeChild(a)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}
+}
+function render(){
+  var s=q.value.trim().toLowerCase();list.innerHTML="";var n=0;
+  P.forEach(function(p){
+    if(s&&(p[0]+" "+p[1]).toLowerCase().indexOf(s)<0)return;
+    n++;
+    var c=document.createElement("div");c.className="card";
+    var h=document.createElement("h2");h.textContent=p[0];
+    var d=document.createElement("p");d.textContent=p[1];
+    var b=document.createElement("button");b.textContent="Copy";
+    b.onclick=function(){copy(p[1],b)};
+    c.appendChild(h);c.appendChild(d);c.appendChild(b);list.appendChild(c);
+  });
+  if(!n){var e=document.createElement("div");e.className="empty";e.textContent="No prompts found.";list.appendChild(e)}
+}
+q.addEventListener("input",render);render();
+</script>
+</body>
+</html>
